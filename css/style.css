@@ -644,6 +644,12 @@ img {
   font-size: 0.875rem;
 }
 
+.footer-social {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.06em;
+}
+
 /* Mobile */
 @media (max-width: 860px) {
   .nav-links {
