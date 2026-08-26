@@ -1,6 +1,7 @@
 (function () {
   var navToggle = document.querySelector('.nav-toggle');
   var navLinks = document.querySelector('.nav-links');
+  var header = document.querySelector('.header');
 
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', function () {
@@ -14,12 +15,61 @@
     });
   }
 
+  function onScrollHeader() {
+    if (!header) return;
+    header.classList.toggle('is-scrolled', window.scrollY > 20);
+  }
+
+  window.addEventListener('scroll', onScrollHeader, { passive: true });
+  onScrollHeader();
+
+  // Active nav highlight
+  var sections = document.querySelectorAll('main section[id]');
+  var navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+
+  function updateActiveNav() {
+    var current = '';
+    sections.forEach(function (section) {
+      if (window.scrollY >= section.offsetTop - 120) {
+        current = section.id;
+      }
+    });
+    navAnchors.forEach(function (a) {
+      a.classList.toggle('is-active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+
+  // Scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(function (el) {
+      revealObs.observe(el);
+    });
+  } else {
+    revealEls.forEach(function (el) {
+      el.classList.add('is-visible');
+    });
+  }
+
   function createDots(container, count, onSelect) {
+    if (!container) return;
     container.innerHTML = '';
     for (var i = 0; i < count; i++) {
       var dot = document.createElement('button');
       dot.type = 'button';
-      dot.className = 'carousel-dot' + (i === 0 ? ' is-active' : '');
+      dot.className = 'slider-dot' + (i === 0 ? ' is-active' : '');
       dot.setAttribute('aria-label', '第' + (i + 1) + '张');
       dot.dataset.index = String(i);
       dot.addEventListener('click', function () {
@@ -29,76 +79,42 @@
     }
   }
 
-  function initHeroCarousel(root) {
-    var slides = root.querySelectorAll('.carousel-slide');
-    var dotsContainer = root.querySelector('.carousel-dots');
-    var interval = Number(root.dataset.interval) || 5000;
+  function initSlider(root) {
+    var track = root.querySelector('.slider-track');
+    var slides = root.querySelectorAll('.slider-slide');
+    var prevBtn = root.querySelector('.slider-prev');
+    var nextBtn = root.querySelector('.slider-next');
+    var dotsContainer = root.querySelector('.slider-dots');
+    var progressBar = root.querySelector('.slider-progress-bar');
+    var viewport = root.querySelector('.slider-viewport');
+    var interval = Number(root.dataset.interval) || 4500;
     var current = 0;
     var timer = null;
+    var startX = 0;
+    var deltaX = 0;
+    var dragging = false;
 
-    createDots(dotsContainer, slides.length, goTo);
+    if (!track || slides.length === 0) return;
 
-    function goTo(index) {
-      slides[current].classList.remove('is-active');
-      if (dotsContainer.children[current]) {
-        dotsContainer.children[current].classList.remove('is-active');
-      }
-
-      current = (index + slides.length) % slides.length;
-
-      slides[current].classList.add('is-active');
-      if (dotsContainer.children[current]) {
-        dotsContainer.children[current].classList.add('is-active');
-      }
-    }
-
-    function next() {
-      goTo(current + 1);
-    }
-
-    function start() {
+    createDots(dotsContainer, slides.length, function (index) {
       stop();
-      timer = setInterval(next, interval);
-    }
+      goTo(index);
+      start();
+    });
 
-    function stop() {
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
+    function update() {
+      track.style.transform = 'translateX(-' + current * 100 + '%)';
+      if (dotsContainer) {
+        Array.prototype.forEach.call(dotsContainer.children, function (dot, i) {
+          dot.classList.toggle('is-active', i === current);
+        });
       }
+      restartProgress();
     }
-
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', start);
-    start();
-  }
-
-  function initShowcaseCarousel(root) {
-    var slides = root.querySelectorAll('.showcase-slide');
-    var thumbs = root.querySelectorAll('.showcase-thumbs .thumb');
-    var prevBtn = root.querySelector('.carousel-prev');
-    var nextBtn = root.querySelector('.carousel-next');
-    var progressBar = root.querySelector('.showcase-progress-bar');
-    var interval = Number(root.dataset.interval) || 4000;
-    var current = 0;
-    var timer = null;
-    var progressTimer = null;
 
     function goTo(index) {
-      slides[current].classList.remove('is-active');
-      if (thumbs[current]) {
-        thumbs[current].classList.remove('is-active');
-      }
-
       current = (index + slides.length) % slides.length;
-
-      slides[current].classList.add('is-active');
-      if (thumbs[current]) {
-        thumbs[current].classList.add('is-active');
-        thumbs[current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
-
-      restartProgress();
+      update();
     }
 
     function next() {
@@ -111,14 +127,13 @@
 
     function restartProgress() {
       if (!progressBar) return;
-      if (progressTimer) {
-        clearTimeout(progressTimer);
-      }
       progressBar.style.transition = 'none';
       progressBar.style.width = '0%';
       requestAnimationFrame(function () {
-        progressBar.style.transition = 'width ' + interval + 'ms linear';
-        progressBar.style.width = '100%';
+        requestAnimationFrame(function () {
+          progressBar.style.transition = 'width ' + interval + 'ms linear';
+          progressBar.style.width = '100%';
+        });
       });
     }
 
@@ -138,25 +153,66 @@
       }
     }
 
-    if (prevBtn) prevBtn.addEventListener('click', function () { stop(); prev(); start(); });
-    if (nextBtn) nextBtn.addEventListener('click', function () { stop(); next(); start(); });
-
-    thumbs.forEach(function (thumb) {
-      thumb.addEventListener('click', function () {
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function () {
         stop();
-        goTo(Number(this.dataset.index));
+        prev();
         start();
       });
-    });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function () {
+        stop();
+        next();
+        start();
+      });
+    }
 
     root.addEventListener('mouseenter', stop);
     root.addEventListener('mouseleave', start);
+
+    // Touch / drag swipe
+    function onPointerDown(e) {
+      dragging = true;
+      startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      deltaX = 0;
+      stop();
+      track.style.transition = 'none';
+    }
+
+    function onPointerMove(e) {
+      if (!dragging) return;
+      var x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      deltaX = x - startX;
+      var percent = (deltaX / root.offsetWidth) * 100;
+      track.style.transform = 'translateX(calc(-' + current * 100 + '% + ' + percent + '%))';
+    }
+
+    function onPointerUp() {
+      if (!dragging) return;
+      dragging = false;
+      track.style.transition = '';
+      if (Math.abs(deltaX) > root.offsetWidth * 0.18) {
+        if (deltaX < 0) next();
+        else prev();
+      } else {
+        update();
+      }
+      start();
+    }
+
+    var dragTarget = viewport || root;
+    dragTarget.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+    dragTarget.addEventListener('touchstart', onPointerDown, { passive: true });
+    dragTarget.addEventListener('touchmove', onPointerMove, { passive: true });
+    dragTarget.addEventListener('touchend', onPointerUp);
+
+    update();
     start();
   }
 
-  var heroCarousel = document.querySelector('[data-carousel="hero"]');
-  if (heroCarousel) initHeroCarousel(heroCarousel);
-
-  var showcaseCarousel = document.querySelector('[data-carousel="showcase"]');
-  if (showcaseCarousel) initShowcaseCarousel(showcaseCarousel);
+  document.querySelectorAll('[data-slider]').forEach(initSlider);
 })();
