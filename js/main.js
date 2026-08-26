@@ -95,7 +95,13 @@
       slides[current].classList.add('is-active');
       if (thumbs[current]) {
         thumbs[current].classList.add('is-active');
-        thumbs[current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        // Only scroll the thumb strip horizontally — never scroll the page
+        var thumbsContainer = root.querySelector('.showcase-thumbs');
+        if (thumbsContainer) {
+          var thumb = thumbs[current];
+          var left = thumb.offsetLeft - (thumbsContainer.clientWidth - thumb.offsetWidth) / 2;
+          thumbsContainer.scrollTo({ left: left, behavior: 'smooth' });
+        }
       }
 
       restartProgress();
