@@ -31,25 +31,13 @@
 
   <main>
     <section class="hero">
-      <div class="slider" data-slider data-interval="5000">
-        <div class="slider-viewport">
-          <div class="slider-track">
-            <div class="slider-slide">
-              <img src="images/gallery/01-exhibition-booth.jpg" alt="布神纺织展会展厅">
-            </div>
-            <div class="slider-slide">
-              <img src="images/gallery/05-fabric-samples.jpg" alt="印花布艺样品">
-            </div>
-            <div class="slider-slide">
-              <img src="images/gallery/02-brand-logo.jpg" alt="布神纺织品牌墙">
-            </div>
-            <div class="slider-slide">
-              <img src="images/gallery/03-mattress-fabric.jpg" alt="床垫面料展厅">
-            </div>
-            <div class="slider-slide">
-              <img src="images/gallery/06-fabric-color-wheel.jpg" alt="多色面料色卡">
-            </div>
-          </div>
+      <div class="hero-carousel" data-carousel="hero" data-interval="5000">
+        <div class="carousel-slides">
+          <div class="carousel-slide is-active" style="background-image: url('images/gallery/01-exhibition-booth.jpg')"></div>
+          <div class="carousel-slide" style="background-image: url('images/gallery/05-fabric-samples.jpg')"></div>
+          <div class="carousel-slide" style="background-image: url('images/gallery/02-brand-logo.jpg')"></div>
+          <div class="carousel-slide" style="background-image: url('images/gallery/03-mattress-fabric.jpg')"></div>
+          <div class="carousel-slide" style="background-image: url('images/gallery/06-fabric-color-wheel.jpg')"></div>
         </div>
         <div class="hero-overlay"></div>
         <div class="container hero-content">
@@ -58,20 +46,18 @@
           <p class="hero-desc">窗帘布艺 · 床垫面料 · 纺织家纺</p>
           <a href="#showcase" class="btn btn-primary">浏览官方展示</a>
         </div>
-        <button class="slider-btn slider-prev" type="button" aria-label="上一张">&#10094;</button>
-        <button class="slider-btn slider-next" type="button" aria-label="下一张">&#10095;</button>
-        <div class="slider-dots hero-dots"></div>
+        <div class="hero-dots carousel-dots"></div>
       </div>
     </section>
 
     <section id="about" class="section">
       <div class="container">
-        <h2 class="section-title reveal">关于我们</h2>
+        <h2 class="section-title">关于我们</h2>
         <div class="about-grid">
-          <div class="about-visual reveal">
+          <div class="about-visual">
             <img src="images/gallery/02-brand-logo.jpg" alt="布神纺织品牌形象" loading="lazy">
           </div>
-          <div class="about-text reveal">
+          <div class="about-text">
             <p class="about-lead">佛山市顺德区布神家居用品有限公司（布神纺织 BUSHEN WEAVING）成立于2012年，扎根佛山顺德龙江家居产业带，专注窗帘布艺、床垫面料与纺织家纺。</p>
             <p>我们以「专业、诚信、创新、共赢」为经营理念，为家装、公寓、酒店及加盟伙伴提供优质布艺产品与软装解决方案，让纺织之美走进每一个生活空间。</p>
             <div class="about-stats">
@@ -95,39 +81,59 @@
 
     <section id="showcase" class="section section-alt">
       <div class="container">
-        <h2 class="section-title reveal">官方展示</h2>
-        <p class="section-intro reveal">展厅实拍 · 面料样品 · 展会风采 · 左右滑动切换</p>
+        <h2 class="section-title">官方展示</h2>
+        <p class="section-intro">展厅实拍 · 面料样品 · 展会风采</p>
 
-        <div class="panel-slider reveal" data-slider data-interval="4000">
-          <div class="slider-viewport panel-viewport">
-            <div class="slider-track">
-              <figure class="slider-slide">
-                <img src="images/gallery/01-exhibition-booth.jpg" alt="布神纺织展会展厅全貌">
-                <figcaption>布神纺织 · 展会展厅全貌</figcaption>
-              </figure>
-              <figure class="slider-slide">
-                <img src="images/gallery/05-fabric-samples.jpg" alt="印花布艺样品">
-                <figcaption>印花布艺 · 垂挂样品展示</figcaption>
-              </figure>
-              <figure class="slider-slide">
-                <img src="images/gallery/02-brand-logo.jpg" alt="布神纺织品牌形象墙">
-                <figcaption>布神纺织 · 品牌形象墙</figcaption>
-              </figure>
-              <figure class="slider-slide">
-                <img src="images/gallery/03-mattress-fabric.jpg" alt="床垫面料展厅">
-                <figcaption>床垫面料 · MATTRESS FABRIC 展厅</figcaption>
-              </figure>
-              <figure class="slider-slide">
-                <img src="images/gallery/06-fabric-color-wheel.jpg" alt="多色面料色卡">
-                <figcaption>多色面料 · 色卡选样</figcaption>
-              </figure>
+        <div class="showcase-carousel" data-carousel="showcase" data-interval="4000">
+          <div class="showcase-main">
+            <button class="carousel-btn carousel-prev" type="button" aria-label="上一张">&#10094;</button>
+            <div class="showcase-viewport">
+              <div class="showcase-track">
+                <figure class="showcase-slide is-active">
+                  <img src="images/gallery/01-exhibition-booth.jpg" alt="布神纺织展会展厅全貌">
+                  <figcaption>布神纺织 · 展会展厅全貌</figcaption>
+                </figure>
+                <figure class="showcase-slide">
+                  <img src="images/gallery/05-fabric-samples.jpg" alt="印花布艺样品">
+                  <figcaption>印花布艺 · 垂挂样品展示</figcaption>
+                </figure>
+                <figure class="showcase-slide">
+                  <img src="images/gallery/02-brand-logo.jpg" alt="布神纺织品牌形象墙">
+                  <figcaption>布神纺织 · 品牌形象墙</figcaption>
+                </figure>
+                <figure class="showcase-slide">
+                  <img src="images/gallery/03-mattress-fabric.jpg" alt="床垫面料展厅">
+                  <figcaption>床垫面料 · MATTRESS FABRIC 展厅</figcaption>
+                </figure>
+                <figure class="showcase-slide">
+                  <img src="images/gallery/06-fabric-color-wheel.jpg" alt="多色面料色卡">
+                  <figcaption>多色面料 · 色卡选样</figcaption>
+                </figure>
+              </div>
             </div>
+            <button class="carousel-btn carousel-next" type="button" aria-label="下一张">&#10095;</button>
           </div>
-          <button class="slider-btn slider-prev panel-btn" type="button" aria-label="上一张">&#10094;</button>
-          <button class="slider-btn slider-next panel-btn" type="button" aria-label="下一张">&#10095;</button>
-          <div class="slider-dots panel-dots"></div>
-          <div class="slider-progress">
-            <div class="slider-progress-bar"></div>
+
+          <div class="showcase-thumbs">
+            <button class="thumb is-active" type="button" data-index="0">
+              <img src="images/gallery/01-exhibition-booth.jpg" alt="">
+            </button>
+            <button class="thumb" type="button" data-index="1">
+              <img src="images/gallery/05-fabric-samples.jpg" alt="">
+            </button>
+            <button class="thumb" type="button" data-index="2">
+              <img src="images/gallery/02-brand-logo.jpg" alt="">
+            </button>
+            <button class="thumb" type="button" data-index="3">
+              <img src="images/gallery/03-mattress-fabric.jpg" alt="">
+            </button>
+            <button class="thumb" type="button" data-index="4">
+              <img src="images/gallery/06-fabric-color-wheel.jpg" alt="">
+            </button>
+          </div>
+
+          <div class="showcase-progress">
+            <div class="showcase-progress-bar"></div>
           </div>
         </div>
       </div>
@@ -135,64 +141,49 @@
 
     <section id="products" class="section">
       <div class="container">
-        <h2 class="section-title reveal">产品展示</h2>
-        <p class="section-intro reveal">从窗帘帘幕到床垫面料，覆盖家纺软装全场景需求</p>
-
-        <div class="panel-slider reveal" data-slider data-interval="4500">
-          <div class="slider-viewport panel-viewport">
-            <div class="slider-track">
-              <figure class="slider-slide product-slide">
-                <img src="images/gallery/05-fabric-samples.jpg" alt="窗帘布艺">
-                <div class="product-caption">
-                  <h3>窗帘布艺</h3>
-                  <p>印花布艺与装饰帘幕，柔光遮光兼顾，适配家用与商业空间。</p>
-                </div>
-              </figure>
-              <figure class="slider-slide product-slide">
-                <img src="images/gallery/03-mattress-fabric.jpg" alt="床垫面料">
-                <div class="product-caption">
-                  <h3>床垫面料</h3>
-                  <p>雪尼尔、针织等高品质床垫面料，亲肤透气，耐磨耐用。</p>
-                </div>
-              </figure>
-              <figure class="slider-slide product-slide">
-                <img src="images/gallery/06-fabric-color-wheel.jpg" alt="多色面料">
-                <div class="product-caption">
-                  <h3>多色面料</h3>
-                  <p>丰富色卡与纹理选择，满足个性化定制与批量选样需求。</p>
-                </div>
-              </figure>
-              <figure class="slider-slide product-slide">
-                <img src="images/gallery/01-exhibition-booth.jpg" alt="展会风采">
-                <div class="product-caption">
-                  <h3>展会风采</h3>
-                  <p>布神纺织展厅实景，展示品牌实力与产品体系。</p>
-                </div>
-              </figure>
+        <h2 class="section-title">产品展示</h2>
+        <p class="section-intro">从窗帘帘幕到床垫面料，覆盖家纺软装全场景需求</p>
+        <div class="products-grid">
+          <article class="product-card product-card-wide">
+            <img src="images/gallery/05-fabric-samples.jpg" alt="窗帘布艺" loading="lazy">
+            <div class="product-info">
+              <h3>窗帘布艺</h3>
+              <p>印花布艺与装饰帘幕，柔光遮光兼顾，适配家用与商业空间。</p>
             </div>
-          </div>
-          <button class="slider-btn slider-prev panel-btn" type="button" aria-label="上一张">&#10094;</button>
-          <button class="slider-btn slider-next panel-btn" type="button" aria-label="下一张">&#10095;</button>
-          <div class="slider-dots panel-dots"></div>
+          </article>
+          <article class="product-card">
+            <img src="images/gallery/03-mattress-fabric.jpg" alt="床垫面料" loading="lazy">
+            <div class="product-info">
+              <h3>床垫面料</h3>
+              <p>雪尼尔、针织等高品质床垫面料，亲肤透气，耐磨耐用。</p>
+            </div>
+          </article>
+          <article class="product-card">
+            <img src="images/gallery/06-fabric-color-wheel.jpg" alt="多色面料" loading="lazy">
+            <div class="product-info">
+              <h3>多色面料</h3>
+              <p>丰富色卡与纹理选择，满足个性化定制与批量选样需求。</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
     <section id="services" class="section section-alt">
       <div class="container">
-        <h2 class="section-title reveal">业务范围</h2>
+        <h2 class="section-title">业务范围</h2>
         <div class="services-grid">
-          <article class="service-card reveal">
+          <article class="service-card">
             <div class="service-icon">01</div>
             <h3>布料与家纺销售</h3>
             <p>销售布料、布、家居用品及纺织布艺，覆盖窗帘、床品与软装面料。</p>
           </article>
-          <article class="service-card reveal">
+          <article class="service-card">
             <div class="service-icon">02</div>
             <h3>床垫面料供应</h3>
             <p>提供雪尼尔、针织等多种床垫专用面料，服务家用、酒店及民宿场景。</p>
           </article>
-          <article class="service-card reveal">
+          <article class="service-card">
             <div class="service-icon">03</div>
             <h3>软装定制方案</h3>
             <p>面向公寓、家装与商业空间，提供窗帘与软装饰配套定制服务。</p>
@@ -203,8 +194,8 @@
 
     <section id="contact" class="section">
       <div class="container">
-        <h2 class="section-title reveal">联系我们</h2>
-        <div class="contact-card reveal">
+        <h2 class="section-title">联系我们</h2>
+        <div class="contact-card">
           <div class="contact-item">
             <span class="contact-label">公司名称</span>
             <span class="contact-value">佛山市顺德区布神家居用品有限公司</span>
