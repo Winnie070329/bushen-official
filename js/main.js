@@ -1,4 +1,6 @@
 (function () {
+  document.documentElement.classList.add('js-ready');
+
   var navToggle = document.querySelector('.nav-toggle');
   var navLinks = document.querySelector('.nav-links');
   var header = document.querySelector('.header');
@@ -52,6 +54,13 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
     revealEls.forEach(function (el) { revealObs.observe(el); });
+    // Show sections already in viewport immediately
+    revealEls.forEach(function (el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.92) {
+        el.classList.add('is-visible');
+      }
+    });
   } else {
     revealEls.forEach(function (el) { el.classList.add('is-visible'); });
   }
