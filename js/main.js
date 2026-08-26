@@ -172,10 +172,23 @@
     root.addEventListener('mouseenter', stop);
     root.addEventListener('mouseleave', start);
 
-    // Touch / drag swipe
+    // Touch / drag swipe (horizontal only, never scroll the page)
+    var startY = 0;
+    var lockHorizontal = false;
+
+    function getPoint(e) {
+      if (e.touches && e.touches[0]) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+      return { x: e.clientX, y: e.clientY };
+    }
+
     function onPointerDown(e) {
+      var point = getPoint(e);
       dragging = true;
-      startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      lockHorizontal = false;
+      startX = point.x;
+      startY = point.y;
       deltaX = 0;
       stop();
       track.style.transition = 'none';
@@ -183,22 +196,33 @@
 
     function onPointerMove(e) {
       if (!dragging) return;
-      var x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-      deltaX = x - startX;
-      var percent = (deltaX / root.offsetWidth) * 100;
-      track.style.transform = 'translateX(calc(-' + current * 100 + '% + ' + percent + '%))';
+      var point = getPoint(e);
+      deltaX = point.x - startX;
+      var deltaY = point.y - startY;
+
+      if (!lockHorizontal && Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        lockHorizontal = true;
+      }
+
+      // Only move the track sideways; never trigger page scroll
+      if (lockHorizontal) {
+        if (e.cancelable) e.preventDefault();
+        var percent = (deltaX / root.offsetWidth) * 100;
+        track.style.transform = 'translateX(calc(-' + current * 100 + '% + ' + percent + '%))';
+      }
     }
 
     function onPointerUp() {
       if (!dragging) return;
       dragging = false;
       track.style.transition = '';
-      if (Math.abs(deltaX) > root.offsetWidth * 0.18) {
+      if (lockHorizontal && Math.abs(deltaX) > root.offsetWidth * 0.18) {
         if (deltaX < 0) next();
         else prev();
       } else {
         update();
       }
+      lockHorizontal = false;
       start();
     }
 
@@ -207,7 +231,7 @@
     window.addEventListener('mousemove', onPointerMove);
     window.addEventListener('mouseup', onPointerUp);
     dragTarget.addEventListener('touchstart', onPointerDown, { passive: true });
-    dragTarget.addEventListener('touchmove', onPointerMove, { passive: true });
+    dragTarget.addEventListener('touchmove', onPointerMove, { passive: false });
     dragTarget.addEventListener('touchend', onPointerUp);
 
     update();
